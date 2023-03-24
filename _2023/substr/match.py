@@ -666,7 +666,7 @@ class Preprocessing(Scene):
             square.set_stroke(BLACK)
             
         r_s_row.next_to(s_row, UP)
-        zbox = Tex("\\text{Z-}box")
+        zbox = Tex("Z\\text{-}box")
         zbox.next_to(r_s_row, LEFT)
         self.play(TransformFromCopy(s_row.copy(), r_s_row))
         
@@ -714,17 +714,33 @@ class Preprocessing(Scene):
                   FadeOut(r_s_row))
 
         # Z boxes
+        zbox_lines = dict()
         for i in range(len(s)):
             if z_values[i] != 0:
                 lines = box_line(s_row, i, i+z_values[i]-1, 
                                  1.6 if i in [5, 9] else (1.2 if i == 10 else 2), 
                                  squeeze=0.2 if i == 10 else 0.0)
+                zbox_lines[str(i+1)] = lines
                 self.play(Write(lines), lag_ratio=0.7)
                 
         self.wait()
             
         # Show R i and L i
-    
+        r = Tex("R")
+        l = Tex("L")
+        r_row = Square(side_length=0.75 * 1.2).get_grid(1, 11, buff=0)
+        l_row = Square(side_length=0.75 * 1.2).get_grid(1, 11, buff=0)
+        r_row.next_to(z_row, DOWN)
+        l_row.next_to(r_row, DOWN)
+        r.next_to(r_row, LEFT)
+        l.next_to(l_row, LEFT)
+        
+        r_values = [-1, 2, -1, -1, 7, 7, 7, -1, 10, 11, 11]
+        l_values = [-1, 2, -1, -1, 5, 5, 5, -1, 9, 10, 10]  # last 10 or 11
+        for index, z_value in enumerate(z_values):
+            if z_value != 0:
+                pass
+        
     def add_block_labels(self, blocks, letter, color=BLUE, font_size=30):
         labels = VGroup()
         for n, square in enumerate(blocks):
@@ -735,6 +751,8 @@ class Preprocessing(Scene):
             square.add(label)
             labels.add(label)
         return labels
+    
+    
         # 
         # We need something to guide us, Sure that's Z-value
 
